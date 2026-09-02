@@ -1,0 +1,40 @@
+# Local configuration and secrets
+config.toml
+config.*.toml
+!config.example.toml
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.secret
+secrets/
+
+# Go build and test artifacts
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Editor and OS files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Local Docker overrides
+docker-compose.override.yml
+docker-compose.local.yml
