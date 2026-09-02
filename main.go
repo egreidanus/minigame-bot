@@ -1,9 +1,15 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/disgoorg/disgo"
+	"github.com/disgoorg/disgo/bot"
+	"github.com/disgoorg/disgo/gateway"
 	"github.com/joho/godotenv"
 )
 
@@ -16,4 +22,26 @@ func main() {
 	if discord_token == "" {
 		log.Fatal("Failed to get the DISCORD_TOKEN from the .env file!")
 	}
+
+	client, err := disgo.New(discord_token,
+		bot.WithGatewayConfigOpts(
+			gateway.WithIntents(
+				gateway.IntentGuilds,
+				gateway.IntentGuildMessages,
+				gateway.IntentDirectMessages,
+			),
+		),
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err = client.OpenGateway(context.TODO()); err != nil {
+		panic(err)
+	}
+
+	s := make(chan os.Signal, 1)
+	signal.Notify(s, syscall.SIGINT, syscall.SIGTERM)
+	<-s
 }
