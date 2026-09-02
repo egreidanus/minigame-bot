@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -9,8 +10,14 @@ import (
 
 	"github.com/disgoorg/disgo"
 	"github.com/disgoorg/disgo/bot"
+	"github.com/disgoorg/disgo/events"
 	"github.com/disgoorg/disgo/gateway"
+
 	"github.com/joho/godotenv"
+)
+
+var (
+	discord_token = ""
 )
 
 func main() {
@@ -31,6 +38,10 @@ func main() {
 				gateway.IntentDirectMessages,
 			),
 		),
+
+		bot.WithEventListenerFunc(func(e *events.Ready) {
+			fmt.Println("Bot is connected as", e.User.Username)
+		}),
 	)
 
 	if err != nil {
